@@ -4,5 +4,6 @@ const adminController = require('../controllers/adminController');
 
 adminRouter
     .post('/signup',adminController.postSignup)
+    .post('/login',adminController.postLogin)
 
 module.exports = adminRouter;
