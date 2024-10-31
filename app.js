@@ -4,17 +4,19 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const passport = require('passport');
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173'
+}));
 
 
 
-// const userRouter = require('./routes/userRoutes');
-// const adminRouter = require('./routes/adminRoutes')
-// app.use('/admin',adminRouter);
-// app.use('/index',userRouter);
+
+const adminRouter = require('./routes/adminRoutes')
+app.use('/admin',adminRouter);
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected successfully'))

@@ -3,6 +3,6 @@ const adminRouter = express.Router();
 const adminController = require('../controllers/adminController');
 
 adminRouter
-    .get('/',adminController.getadmin)
+    .post('/signup',adminController.postSignup)
 
 module.exports = adminRouter;
