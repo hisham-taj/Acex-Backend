@@ -43,13 +43,12 @@ const adminController = {
       }
     },
     postLogin: async (req, res) => {
-        // Define Joi schema for login validation
-        const schema = joi.object({
+
+      const schema = joi.object({
           email: joi.string().email().required(),
           password: joi.string().min(6).required(),
         });
     
-        // Validate login data
         const { error } = schema.validate(req.body);
         if (error) {
           return res.status(400).json({ message: error.details[0].message });
@@ -58,31 +57,40 @@ const adminController = {
         const { email, password } = req.body;
     
         try {
-          // Check if the admin exists in the database
+
           const admin = await Admin.findOne({ email });
           if (!admin) {
             return res.status(400).json({ message: "Invalid email or password" });
           }
     
-          // Compare the provided password with the hashed password in the database
           const isPasswordValid = await bcrypt.compare(password, admin.password);
           if (!isPasswordValid) {
             return res.status(400).json({ message: "Invalid email or password" });
           }
     
-          // Generate JWT token
           const token = jwt.sign(
-            { id: admin._id, email: admin.email },
-            process.env.JWT_SECRET || "your_jwt_secret_key",
+            { id: admin._id, email: admin.email, userName: admin.userName },
+            process.env.JWT_SECRET || "admin-page",
             { expiresIn: "1h" }
           );
     
-          res.status(200).json({ message: "Login successful", token });
+          res.status(200).json({ message: "Login successful", token, userName: admin.userName });
         } catch (error) {
           console.error(error);
           res.status(500).json({ message: "Internal error." });
         }
       },
+
+      getLogin: async (req,res)=>{
+        try {          
+          res.render('/login');
+          console.log('login page');
+        } catch (error) {
+          console.error(error)
+        }
+
+      },
+      
     
   };
   
