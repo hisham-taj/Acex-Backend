@@ -8,7 +8,8 @@ const verifyToken = require('./middlewares/authMiddleware')
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:5173'
+  origin: ["https://acex-project.vercel.app"],
+  credentials: true
 }));
 
 
